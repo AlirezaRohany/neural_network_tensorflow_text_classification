@@ -9,7 +9,7 @@ data = keras.datasets.imdb
 
 print(train_data[20])
 
-# dictioanry for mapping words to integer indices
+# dictionary for mapping words to integer indices
 word_index = data.get_word_index()
 
 word_index = {k: (v + 3) for k, v in word_index.items()}
@@ -22,8 +22,25 @@ word_index["<UNUSED>"] = 3
 reverse_word_index = dict([(value, key) for (key, value) in word_index.items()])
 
 
+# showing a integer encode review to human readable review
 def decode_review(integer_text):
     return " ".join([reverse_word_index.get(i, "?") for i in integer_text])
 
 
 print(decode_review(train_data[20]))
+print(len(test_data[0]), len(test_data[1]))
+
+# preprocessing our data
+train_data = keras.preprocessing.sequence.pad_sequences(train_data, value=word_index["<PAD>"], padding="post",
+                                                        maxlen=250)
+test_data = keras.preprocessing.sequence.pad_sequences(test_data, value=word_index["<PAD>"], padding="post",
+                                                       maxlen=250)
+
+print(len(test_data[0]), len(test_data[1]))
+
+# creating the model
+model = keras.Sequential()
+model.add(keras.layers.Embedding(10000, 16))
+model.add(keras.layers.GlobalAveragePooling1D())
+model.add(keras.layers.Dense(16, activation="relu"))
+model.add(keras.layers.Dense(1, activation="sigmoid"))
