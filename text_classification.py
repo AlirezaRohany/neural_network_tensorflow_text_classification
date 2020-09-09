@@ -44,3 +44,26 @@ model.add(keras.layers.Embedding(10000, 16))
 model.add(keras.layers.GlobalAveragePooling1D())
 model.add(keras.layers.Dense(16, activation="relu"))
 model.add(keras.layers.Dense(1, activation="sigmoid"))
+
+print("\n \n", model.summary())
+
+model.compile(optimizer="adam", loss="binary_crossentropy", metrics=["accuracy"])
+
+x_validation = train_data[:10000]
+x_train = train_data[10000:]
+
+y_validation = train_labels[:10000]
+y_train = train_labels[10000:]
+
+fit_model = model.fit(x_train, y_train, epochs=40, batch_size=512, validation_data=(x_validation, y_validation),
+                      verbose=1)
+
+results = model.evaluate(test_data, test_labels)
+print(results)
+
+# checking a single review/ has bugs !!!
+review = test_data[0]
+predict = model.predict([review])
+print("review: ", "\n", decode_review(review))
+print("prediction: " + str(predict[0]))
+predict("actual: " + str(test_labels[0]))
