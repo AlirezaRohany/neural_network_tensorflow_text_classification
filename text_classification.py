@@ -59,6 +59,11 @@ fit_model = model.fit(x_train, y_train, epochs=40, batch_size=512, validation_da
                       verbose=1)
 
 results = model.evaluate(test_data, test_labels)
-print(results)
+print("evaluate result: ", results)
 
-
+# checking a single review
+review = test_data[0]
+predict = model.predict([review])
+print("review: ", "\n", decode_review(review))
+print("prediction: " + str(predict[0]))
+print("actual: ", str(test_labels[0]))
