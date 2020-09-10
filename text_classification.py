@@ -61,9 +61,4 @@ fit_model = model.fit(x_train, y_train, epochs=40, batch_size=512, validation_da
 results = model.evaluate(test_data, test_labels)
 print(results)
 
-# checking a single review/ has bugs !!!
-review = test_data[0]
-predict = model.predict([review])
-print("review: ", "\n", decode_review(review))
-print("prediction: " + str(predict[0]))
-predict("actual: " + str(test_labels[0]))
+
