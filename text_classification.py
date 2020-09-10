@@ -63,7 +63,7 @@ print("evaluate result: ", results)
 
 # checking a single review
 review = test_data[0]
-predict = model.predict([review])
+predict = model.predict([[review]])
 print("review: ", "\n", decode_review(review))
 print("prediction: " + str(predict[0]))
 print("actual: ", str(test_labels[0]))
