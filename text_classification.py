@@ -74,3 +74,22 @@ model = keras.models.load_model("model.h5")
 # print("actual: ", str(test_labels[0]))
 
 
+def encode_review(string):
+    encoded = [1]
+    for word in string:
+        if word.lower() in word_index:
+            encoded.append(word_index[word.lower()])
+        else:
+            encoded.append(2)
+    return encoded
+
+
+with open("review.txt", encoding="utf-8") as f:
+    for line in f.readlines():
+        myline = line.replace(",", "").replace(".", "").replace("(", "").replace(")", "") \
+            .replace(":", "").replace("\"", "").strip().split(" ")
+        encoded = encode_review(myline)
+        encoded = keras.preprocessing.sequence.pad_sequences([encoded], value=word_index["<PAD>"],
+                                                             padding="post", maxlen=250)
+        prediction = model.predict(encoded)
+        print(line, "\n", encoded, "\n", prediction[0])
