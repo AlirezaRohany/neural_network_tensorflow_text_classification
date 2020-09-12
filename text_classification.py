@@ -5,7 +5,7 @@ import numpy
 # print("text classification is real")
 
 data = keras.datasets.imdb
-(train_data, train_labels), (test_data, test_labels) = data.load_data(num_words=10000)
+(train_data, train_labels), (test_data, test_labels) = data.load_data(num_words=88000)
 
 print(train_data[20])
 
@@ -38,32 +38,39 @@ test_data = keras.preprocessing.sequence.pad_sequences(test_data, value=word_ind
 
 print(len(test_data[0]), len(test_data[1]))
 
-# creating the model
-model = keras.Sequential()
-model.add(keras.layers.Embedding(10000, 16))
-model.add(keras.layers.GlobalAveragePooling1D())
-model.add(keras.layers.Dense(16, activation="relu"))
-model.add(keras.layers.Dense(1, activation="sigmoid"))
+# # creating the model
+# model = keras.Sequential()
+# model.add(keras.layers.Embedding(88000, 16))
+# model.add(keras.layers.GlobalAveragePooling1D())
+# model.add(keras.layers.Dense(16, activation="relu"))
+# model.add(keras.layers.Dense(1, activation="sigmoid"))
+#
+# print("\n \n", model.summary())
+#
+# model.compile(optimizer="adam", loss="binary_crossentropy", metrics=["accuracy"])
+#
+# x_validation = train_data[:10000]
+# x_train = train_data[10000:]
+#
+# y_validation = train_labels[:10000]
+# y_train = train_labels[10000:]
+#
+# fit_model = model.fit(x_train, y_train, epochs=40, batch_size=512, validation_data=(x_validation, y_validation),
+#                       verbose=1)
+#
+# results = model.evaluate(test_data, test_labels)
+# print("evaluate result: ", results)
 
-print("\n \n", model.summary())
+# model.save("model.h5")
 
-model.compile(optimizer="adam", loss="binary_crossentropy", metrics=["accuracy"])
+model = keras.models.load_model("model.h5")
 
-x_validation = train_data[:10000]
-x_train = train_data[10000:]
 
-y_validation = train_labels[:10000]
-y_train = train_labels[10000:]
+# # checking a single review
+# review = test_data[0]
+# predict = model.predict([[review]])
+# print("review: ", "\n", decode_review(review))
+# print("prediction: " + str(predict[0]))
+# print("actual: ", str(test_labels[0]))
 
-fit_model = model.fit(x_train, y_train, epochs=40, batch_size=512, validation_data=(x_validation, y_validation),
-                      verbose=1)
 
-results = model.evaluate(test_data, test_labels)
-print("evaluate result: ", results)
-
-# checking a single review
-review = test_data[0]
-predict = model.predict([[review]])
-print("review: ", "\n", decode_review(review))
-print("prediction: " + str(predict[0]))
-print("actual: ", str(test_labels[0]))
