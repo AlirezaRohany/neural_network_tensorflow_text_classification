@@ -65,7 +65,6 @@ model.save("model.h5")
 
 model = keras.models.load_model("model.h5")
 
-
 # checking a single review
 review = test_data[0]
 predict = model.predict([[review]])
