@@ -38,40 +38,40 @@ test_data = keras.preprocessing.sequence.pad_sequences(test_data, value=word_ind
 
 print(len(test_data[0]), len(test_data[1]))
 
-# # creating the model
-# model = keras.Sequential()
-# model.add(keras.layers.Embedding(88000, 16))
-# model.add(keras.layers.GlobalAveragePooling1D())
-# model.add(keras.layers.Dense(16, activation="relu"))
-# model.add(keras.layers.Dense(1, activation="sigmoid"))
-#
-# print("\n \n", model.summary())
-#
-# model.compile(optimizer="adam", loss="binary_crossentropy", metrics=["accuracy"])
-#
-# x_validation = train_data[:10000]
-# x_train = train_data[10000:]
-#
-# y_validation = train_labels[:10000]
-# y_train = train_labels[10000:]
-#
-# fit_model = model.fit(x_train, y_train, epochs=40, batch_size=512, validation_data=(x_validation, y_validation),
-#                       verbose=1)
-#
-# results = model.evaluate(test_data, test_labels)
-# print("evaluate result: ", results)
+# creating the model
+model = keras.Sequential()
+model.add(keras.layers.Embedding(88000, 16))
+model.add(keras.layers.GlobalAveragePooling1D())
+model.add(keras.layers.Dense(16, activation="relu"))
+model.add(keras.layers.Dense(1, activation="sigmoid"))
 
-# model.save("model.h5")
+print("\n \n", model.summary())
+
+model.compile(optimizer="adam", loss="binary_crossentropy", metrics=["accuracy"])
+
+x_validation = train_data[:10000]
+x_train = train_data[10000:]
+
+y_validation = train_labels[:10000]
+y_train = train_labels[10000:]
+
+fit_model = model.fit(x_train, y_train, epochs=40, batch_size=512, validation_data=(x_validation, y_validation),
+                      verbose=1)
+
+results = model.evaluate(test_data, test_labels)
+print("evaluate result: ", results)
+
+model.save("model.h5")
 
 model = keras.models.load_model("model.h5")
 
 
-# # checking a single review
-# review = test_data[0]
-# predict = model.predict([[review]])
-# print("review: ", "\n", decode_review(review))
-# print("prediction: " + str(predict[0]))
-# print("actual: ", str(test_labels[0]))
+# checking a single review
+review = test_data[0]
+predict = model.predict([[review]])
+print("review: ", "\n", decode_review(review))
+print("prediction: " + str(predict[0]))
+print("actual: ", str(test_labels[0]))
 
 
 def encode_review(string):
